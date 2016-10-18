@@ -43,7 +43,7 @@ def read_file(filename: str):
 
 def mem_dict(filename: str):
     file_content = read_file(filename)
-    words = re.findall(r"[\w']+", file_content)
+    words = list(map(lambda x: x.lower(), re.findall(r"[\w']+", file_content)))
     word_dict = {"": words, words[len(words) - 1]: [""]}
     for i in range(0, len(words) - 1):
         if word_dict.get(words[i]) is None:
