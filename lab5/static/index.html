@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ru" data-ng-app="solanteqTestApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Угадай кто</title>
+</head>
+<body>
+    <h3>Выберите имя изображенного человека</h3>
+    <img src="{{IMAGE_URL}}" alt="Question image">
+    <form action="/checkanswer" method="post">
+        <input type="hidden" name="question_id" value="{{QUESTION_ID}}">
+        <select name="selected_name">
+            {{SELECT_DATA}}
+        </select>
+        <button type="submit">Ответить</button>
+    </form>
+</body>
+</html>
