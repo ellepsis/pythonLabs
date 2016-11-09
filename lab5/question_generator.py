@@ -17,7 +17,12 @@ class QuestionGenerator:
         content = server.read_file(file)
         self.names = content.split("\n")
 
-    def generate_question(self):
+    def set_complexity_range(self, complexity_range: int):
+        if complexity_range < 2 or complexity_range > 100:
+            raise Exception("Complexity range must be in range 2..100")
+        self.complexity_range = complexity_range
+
+    def generate_question(self, complexity_range: int):
         ids = set()
         while len(ids) <= self.variations:
             ids.add(random.randint(1, len(self.names)))
@@ -25,7 +30,7 @@ class QuestionGenerator:
 
         name_id = random.randint(0, len(names)-1)
         name = names[name_id]
-        link = self.__google_request(name)
+        link = self.__google_request(name, complexity_range)
 
         question_id = self.last_question_id
         self.last_question_id += 1
@@ -38,8 +43,9 @@ class QuestionGenerator:
         return res
 
     @staticmethod
-    def __google_request(name: str):
+    def __google_request(name: str, complexity_range: int):
         #req = "https://www.google.ru/search?tbm=isch&q=" + name
         #r = requests.get(req)
         #return r
+        #TODO MUST SELECT image in range : 0 .. complexity_range
         return "http://cs4.pikabu.ru/images/big_size_comm/2014-04_5/13983931397644.png"

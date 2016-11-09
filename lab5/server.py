@@ -1,4 +1,4 @@
-from bottle import route, run, template, static_file, post, request
+from bottle import route, run, template, static_file, post, request, redirect
 import sys
 
 import question_generator
@@ -14,9 +14,9 @@ def read_file(filename: str):
         raise Exception("Can't read file " + filename)
 
 
-def prepare_html():
+def prepare_html(complexity: int):
     html = read_file("static/index.html")
-    question = question_generator_i.generate_question()
+    question = question_generator_i.generate_question(complexity)
     html = html.replace("{{IMAGE_URL}}", question[2])
     sel_data = "".join(
         ["<option value=" + str(i) + ">" + question[1][i] + "</option>" for i in range(1, len(question[1]))])
@@ -27,11 +27,25 @@ def prepare_html():
 
 @route("/")
 def index_request():
-    html = prepare_html()
+    redirect("/10/")
+    return
+
+
+@route("/<complexity>/")
+def page_request(complexity):
+    html = prepare_html(complexity)
     return html
 
+@route("/change_complexity/")
+def change_complexity():
+    val = request.query['complexity']
+    if (val is None):
+        redirect(index_request)
+    redirect("/"+val+"/")
+    return
 
-@post("/checkanswer")
+
+@post("/<complexity>/checkanswer")
 def check_answer():
     question_id = int(request.forms.get("question_id"))
     answer = int(request.forms.get("selected_name"))
