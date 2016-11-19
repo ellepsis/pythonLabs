@@ -1,0 +1,22 @@
+RSS channel:
+id | title | description | link | url;
+
+RSS post:
+id | channel_id | title | link | data | pub_date;
+
+
+Create table RSS_CHANNEL
+(id integer primary key,
+title text,
+description text,
+link text,
+url text);
+
+Create table RSS_POST
+(id integer primary key,
+channel_id integer,
+title text,
+link text,
+data text,
+pub_date datetime,
+foreign key(channel_id) references RSS_CHANNEL(id));
