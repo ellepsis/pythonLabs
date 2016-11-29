@@ -19,7 +19,10 @@ def get_post(data, position: int, channel_id: int):
     post.title = data['entries'][position]['title']
     post.link = data['entries'][position]['link']
     post.data = data['entries'][position]['summary']
-    post.pub_date = data['entries'][position]['published']
+    try:
+        post.pub_date = data['entries'][position]['published']
+    except:
+        post.pub_date = None
     return post
 
 
@@ -30,7 +33,10 @@ def get_channel(data, rss_db_connection: rss_db, url):
     channel = rss_channel.rss_channel()
     channel.id = None
     channel.title = data['feed']['title']
-    channel.description = data['feed']['subtitle']
+    try:
+        channel.description = data['feed']['subtitle']
+    except Exception:
+        channel.description = ""
     channel.link = data['feed']['link']
     channel.url = url
     channel.id = rss_db_connection.insert_channel(channel)
