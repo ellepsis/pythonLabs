@@ -45,15 +45,15 @@ def change_complexity():
     return
 
 
-@post("/<complexity>/checkanswer")
+@post("/checkanswer")
 def check_answer():
     question_id = int(request.forms.get("question_id"))
     answer = int(request.forms.get("selected_name"))
     res = question_generator_i.check_answer(question_id, answer)
     if res:
-        return "<p>YES</p>"
+        return '<p>YES</p> <a href="http:\\\\localhost:8080"> Еще раз </a>'
     else:
-        return "<p>No</p>"
+        return '<p>NO</p> <a href="http:\\\\localhost:8080"> Еще раз </a>'
 
 
 def main(args):

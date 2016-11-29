@@ -1,6 +1,10 @@
 import random
 
+import requests
+
 import server
+
+import re
 
 
 class QuestionGenerator:
@@ -44,8 +48,17 @@ class QuestionGenerator:
 
     @staticmethod
     def __google_request(name: str, complexity_range: int):
-        #req = "https://www.google.ru/search?tbm=isch&q=" + name
-        #r = requests.get(req)
-        #return r
+
+        res = random.randint(1, int(complexity_range))
+        entry = res%20
+        page = int(res/20)
+        headers = {
+            'User-Agent': 'My User Agent 1.0',
+            'From': 'vasya123@domain.com'  # This is another valid field
+        }
+        req = "https://www.google.ru/search?tbm=isch&q=" + name + "&start=" + str(page*20)
+        r = requests.get(req, headers=headers)
+        urls = re.findall(r'<img.*?src=\"(.*?)\">', r.text)
+        return urls[entry]
         #TODO MUST SELECT image in range : 0 .. complexity_range
-        return "http://cs4.pikabu.ru/images/big_size_comm/2014-04_5/13983931397644.png"
+        #return "http://cs4.pikabu.ru/images/big_size_comm/2014-04_5/13983931397644.png"
